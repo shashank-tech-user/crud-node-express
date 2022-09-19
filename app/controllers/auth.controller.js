@@ -52,6 +52,10 @@ exports.login = (req, res) => {
   if(!req.body.password || req.body.password === "")
     return res.status(400).send({ message: "Password field required*"});
   
+  // console.log("req.body => ", req.body);
+  // console.log("req.files => ", req.files);
+  // return;
+
   const user = new Login({
     email: req.body.email,
     password: md5(req.body.password)
@@ -76,11 +80,11 @@ exports.login = (req, res) => {
 
     const token = jwt.sign(
       { user_id: result.email  }, 
-      "test34derwrsd-sdfrtfssdfgrrt-otp42ert5t", {
+      process.env.JWT_SECRET_KEY, {
       expiresIn: "2d"
     });
 
-    result[0]["access_token"] = token;
+    result[0]["access_token"] = `Bearer ${token}`;
     res.status(200).send({
       error: false,
       message: "Login successfully",

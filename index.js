@@ -6,8 +6,10 @@
  */
 
 
+require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const fileUpload = require("express-fileupload");
 
 const app = express();
 
@@ -16,6 +18,8 @@ var corsOptions = {
 }
 
 app.use(cors(corsOptions));
+
+app.use(fileUpload());
 
 /**
  * content-type: application/json

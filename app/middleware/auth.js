@@ -1,7 +1,5 @@
 const jwt = require("jsonwebtoken");
 
-const verifyString = "test34derwrsd-sdfrtfssdfgrrt-otp42ert5t";
-
 const verifyToken = (req, res, next) => {
   const token = req.body.token || req.query.token || req.headers["token"];
 
@@ -12,7 +10,8 @@ const verifyToken = (req, res, next) => {
   }
 
   try {
-    const decoded = jwt.verify(token, verifyString);
+    let newToken = token.split("Bearer ")[1];
+    const decoded = jwt.verify(newToken, process.env.JWT_SECRET_KEY);
     req.user = decoded;
   } catch (error) {
     return res.status(401).send("Invalid token");
