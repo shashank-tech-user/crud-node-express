@@ -1,8 +1,21 @@
 const Register = require("../models/register.model.js");
+const Upload = require("../models/upload.model.js");
 const Login = require("../models/login.model.js");
 const uuid = require("uuid");
 const md5 = require('md5');
 const jwt = require("jsonwebtoken");
+var multer = require("multer");
+
+var storage = multer.diskStorage({
+  destination: function(req, file, callback) {
+    callback(null, "/uploads");
+  },
+  filename: function(req, file, callback) {
+    callback(null, file.originalname);
+  }
+});
+
+var upload = multer({ storage: storage }).single('myfile');
 
 exports.register = (req, res) => {
   if(!req.body.name || req.body.name === "")
@@ -19,6 +32,9 @@ exports.register = (req, res) => {
 
   if(req.body.password !== req.body.confirm_password)
     return res.status(400).send({ message: "Both password field value should be same*"});
+
+  // console.log("req.body => ", req.body);
+  // console.log("req.files => ", req.files.picture);
 
   const user = new Register({
     id: uuid.v4(),
@@ -37,11 +53,13 @@ exports.register = (req, res) => {
       });
       return;
     }
+
     res.status(200).send({
       error: false,
-      message: "Register user successfully",
+      message: "Register user successfully test",
       data: result
     });
+    return;
   });
 }
 
@@ -51,10 +69,6 @@ exports.login = (req, res) => {
 
   if(!req.body.password || req.body.password === "")
     return res.status(400).send({ message: "Password field required*"});
-  
-  // console.log("req.body => ", req.body);
-  // console.log("req.files => ", req.files);
-  // return;
 
   const user = new Login({
     email: req.body.email,

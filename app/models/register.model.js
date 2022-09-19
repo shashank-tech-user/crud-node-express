@@ -16,10 +16,7 @@ Register.register = (data, result) => {
       return;
     }
 
-    result(null, {
-      u_id: res.insertedId,
-      ...data
-    });
+    result(null, {...data});
     return;
   })
 }
