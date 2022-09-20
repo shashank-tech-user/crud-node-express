@@ -102,7 +102,7 @@ exports.login = (req, res) => {
     res.status(200).send({
       error: false,
       message: "Login successfully",
-      data: result
+      data: result[0]
     });
     return;
   })
