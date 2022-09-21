@@ -36,6 +36,7 @@ app.use(express.urlencoded({ extended: true }));
  */
 require("./app/routes/tutorial.route.js")(app);
 require("./app/routes/auth.route.js")(app);
+require("./app/routes/customer.route.js")(app);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
